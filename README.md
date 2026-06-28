@@ -23,7 +23,7 @@ There is a setting in the `.csproj` file that creates a `.mstat` in `obj/` after
 (classes, functions etc.) create how many bytes. I noticed, among others, that `System.String` and `System.Console` had the highest amount of byte allocations.
 I don't know why. 
 
-# Replacing `System.Console` with native terminal functions
+## Replacing `System.Console` with native terminal functions
 
 As the title implies, I replaced `System.Console` with native terminal functions. Check out `interop/`. There are two files:
 * `linux_terminal.cs`
