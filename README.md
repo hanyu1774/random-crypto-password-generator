@@ -42,15 +42,16 @@ I mostly avoided using `System.String`. Instead, I used most of the time:
 
 etc..
 
-The `.mstat` file revealed that `System.String` wasted most amount of bytes. After mostly replacing `string`, the compiled binary size became much smaller.
-
 I have no definitive answer here. But I suspect the reason why `System.String` wasted so many bytes was likely because it carries over many `Exception` messages, which are also included during compile- and runtime. I did find those message in the `.mstat` file, too, although I never explicitly used those `Exception` messages. This explains why there is an extra setting for the `.csproj` file to trim out those messages. I think it was this setting:
 
 ```
     <StackTraceSupport>false</StackTraceSupport>
 ```
+After enabling this setting along with several others, the compiled binary became somewhat smaller.
 
 It doesn't mean those exception messages will never appear, which would be actually problematic. Don't remember the details, but instead, key numbers will be output for specific exceptions, warnings, etc.. Those key numbers are already documented on the website of Microsoft for .NET development, so you can easily find out the message.
+
+The `.mstat` file revealed that `System.String` wasted most amount of bytes. After mostly replacing `string`, the compiled binary size became much smaller.
 
 ## Extra settings in the `.csproj`
 
