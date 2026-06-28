@@ -19,7 +19,7 @@ I made this same project in C++ and Rust. Their compiled binary sizes were very 
 * Rust: 480 KB (Linux)
 * C#: 2 MB (Former size), 710 KB (Windows, current binary size), 970 KB (Linux, current binary size)
 
-There is a setting in the `.csproj`` file that creates a `.mstat` in `obj/` after compilation. It can be used to check out which resources
+There is a setting in the `.csproj` file that creates a `.mstat` in `obj/` after compilation. It can be used to check out which resources
 (classes, functions etc.) create how many bytes. I noticed, among others, that `System.String` and `System.Console` had the highest amount of byte allocations.
 I don't know why. 
 
