@@ -1,4 +1,12 @@
-# Optimizations
+# Random Passwort Generator
+
+This application will create tough passwords. 
+
+No dependencies required before using it. The executable is already in native mashine code and self-contained.
+See "Releases" on the right.
+
+
+# Done optimizations
 
 Although this project is small, I did performance optimizations to improve my skills in C#.
 
