@@ -5,6 +5,7 @@ This application will create tough passwords.
 No dependencies required before using it. The executable is already in native mashine code and self-contained.
 See "Releases" on the right.
 
+This application is compiled into native machine code (AoT compilation) rather than using IL. This ensures more efficiency. Also, this application is self-contained and doesn't any pre-installed dependencies in order to run.
 
 # Done optimizations
 
@@ -25,7 +26,11 @@ I don't intend to sound misleading. There are some weird things going on under t
 I made this same project in C++ and Rust. Their compiled binary sizes were very small:
 * C++: 220 KB (Linux)
 * Rust: 480 KB (Linux)
-* C#: 2 MB (Former size), 710 KB (Windows, current binary size), 970 KB (Linux, current binary size)
+* C#:
+* * 1.3 MB (former size on Windows)
+  * 1.6 MB (former size on Linux)
+  * 710 KB (Windows, current binary size),
+  * 970 KB (Linux, current binary size)
 
 There is a setting in the `.csproj` file that creates a `.mstat` in `obj/` after compilation. It can be used to check out which resources
 (classes, functions etc.) create how many bytes. I noticed, among others, that `System.String` and `System.Console` had the highest amount of byte allocations.
@@ -66,4 +71,3 @@ Anyway, after mostly replacing `string`, the compiled binary size became much sm
 ## Extra settings in the `.csproj`
 
 There are various settings in the `.csproj` to trim out unnecessary things, etc.. They help to reduce the overall binary size after compilation. Check out the project `.csproj` file.
-
