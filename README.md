@@ -21,9 +21,11 @@ So, what did I do?
 
 play this music FIRST. While this music keeps playing, you can continue reading this text.
 
-Music:   https://www.youtube.com/watch?v=-mtcfkWDbOU
+Music:   https://www.youtube.com/watch?v=-mtcfkWDbOU  ---- "File Select" theme from Super Mario 64 (SM64)
 
-What? You don't know pannenkoek2012 / UncommentatedPannen  ??
+What? You don't know pannenkoek2012 / UncommentatedPannen  ?? This is guy is famous in the speed running and modding community of SM64.
+Why the music?? Because that guy uses this music whenever he explains deep meta stuff about SM64 with great attention to detail. Since I will talk about meta stuff here, too, why not listen to the same music, while you continue reading? I am just joking. 😂
+
 
 ## Checking out byte allocations and binary sizes
 
