@@ -15,6 +15,7 @@ A plain PRNG (often loosely called "RNG")is not cryptographically secure. It pro
 ## Done optimizations
 
 Although this project is small, I did performance optimizations to improve my skills in C#.
+The main inspiration doing the optimizations was because of this repo: [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle)
 
 So, what did I do?
 
@@ -26,7 +27,7 @@ What? You don't know pannenkoek2012 / UncommentatedPannen  ??
 
 ## Checking out byte allocations and binary sizes
 
-I don't intend to sound misleading. There are some weird things going on under the hood in .NET which I don't fully understand.
+I don't intend to sound misleading. There are some weird things going on under the hood in .NET which I don't fully understand yet.
 
 I made this same project in C++ and Rust. Their compiled binary sizes were very small:
 * C++: 220 KB (Linux)
@@ -39,13 +40,21 @@ I made this same project in C++ and Rust. Their compiled binary sizes were very 
 
 There is a setting in the `.csproj` file that creates a `.mstat` in `obj/` after compilation. It can be used to check out which resources
 (classes, functions etc.) create how many bytes. I noticed, among others, that `System.String` and `System.Console` had the highest amount of byte allocations.
-I don't know why. 
+Mind you, the high number of allocated bytes I saw isn't bad. It's just noticeably high.
+
+Checking out the `.mstat` file made me realize that strings (and other things) are expensive and this explains why developers, depending on their projects, goals and target platforms, may not want to use strings. Not saying though strings are bad and should be avoided. That would be inconvinient. 
+
+If however there is a very big project, then maybe optimizations should be considered for better efficiency and performance. In the project 'TinyWordle' (see [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle)), nikouu managed to reduce the initial byte size from 62091 KB to a whopping 680 KB.
+
+I will continue using strings just fine unless there is an important reason to write more efficient instructions. Heck, you can even write efficient string instructions e.g. using `string.Create()` and pass `Span` to the method. 
+
+In reality however: frequent optimizations relying on low-level instructions and (perhaps) native functionality imports isn't always ideal for everybody, especially for many other projects.
 
 ## Replacing `System.Console` with native terminal functions
 
 As the title implies, I replaced `System.Console` with native terminal functions. Check out `interop/`. There are two files:
 * `linux_terminal.cs`
-* `windows_terminal.cs`
+* `windows_terminal.cs` (copied from [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle)) and then optmizied, e.g. using `LibraryImport()` instead of `DllImport()`)
 
 Both files simply import native OS functionalities for their own terminal. That way, I don't have to rely on `System.Console`, which saves a lot of bytes.
 
@@ -60,19 +69,6 @@ The `.mstat` file revealed that `System.String` wasted most amount of bytes. I m
 
 etc..
 
-I have no definitive answer here. But I suspect the reason why `System.String` wasted so many bytes was likely because it carries over many `Exception` messages, which are also included during compile- and runtime. I did find those message in the `.mstat` file, too, although I never explicitly used those `Exception` messages. This explains why there is an extra setting for the `.csproj` file to trim out those messages. I think it was this setting:
-
-```
-    <StackTraceSupport>false</StackTraceSupport>
-```
-After enabling this setting along with several others, the compiled binary became somewhat smaller.
-
-About the `<StackTraceSupport>false</StackTraceSupport>` setting:
-
-It doesn't mean those exception messages will never appear, which would be actually problematic. Don't remember the details, but instead, key numbers will be output for specific exceptions, warnings, etc.. Those key numbers are already documented on the website of Microsoft for .NET development, so you can easily find out the message.
+I have no definitive answer for everything but I did find out some reasons why `System.String` wasted many bytes. It's because various compiler/runtime messages (e.g. exceptions) and culture specific data are included into the binary. You can do settings in the `.csproj` file to mitigate this. Check out the project's `.csproj` file to see which settings I used. :)
 
 Anyway, after mostly replacing `string`, the compiled binary size became much smaller.
-
-## Extra settings in the `.csproj`
-
-There are various settings in the `.csproj` to trim out unnecessary things, etc.. They help to reduce the overall binary size after compilation. Check out the project `.csproj` file.
