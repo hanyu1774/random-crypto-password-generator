@@ -1,13 +1,18 @@
 # Random Passwort Generator
 
-This application will create tough passwords. 
+This application will create tough passwords. CSPRPNG is utilized to create random characters. 
 
 No dependencies required before using it. The executable is already in native mashine code and self-contained.
 See "Releases" on the right.
 
 This application is compiled into native machine code (AoT compilation) rather than using IL. This ensures more efficiency. The application is self-contained and doesn't need any pre-installed dependencies in order to run.
 
-# Done optimizations
+## What is CSPRNG and why using it?
+A CSPRNG (cryptographically secure pseudorandom number generator) still runs on a mathematical algorithm, but it is seeded, and often continuously reseeded, with entropy gathered from unpredictable sources such as mouse movement, keyboard timing, etc.. This makes its output computationally infeasible to predict, even if someone knows the algorithm.
+
+A plain PRNG (often loosely called "RNG")is not cryptographically secure. It produces a fully deterministic sequence from its algorithm and seed. If a hacker knows which algorithm was used and can figure out or guess the seed, for example if it was seeded from something predictable like the system clock, they can reproduce the entire output sequence, including any password generated from it. The real weakness isn't the password's length, it's that the seed's possible values are limited enough to search or guess.
+
+## Done optimizations
 
 Although this project is small, I did performance optimizations to improve my skills in C#.
 
