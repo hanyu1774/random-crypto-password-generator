@@ -5,7 +5,7 @@ This application will create tough passwords.
 No dependencies required before using it. The executable is already in native mashine code and self-contained.
 See "Releases" on the right.
 
-This application is compiled into native machine code (AoT compilation) rather than using IL. This ensures more efficiency. Also, this application is self-contained and doesn't any pre-installed dependencies in order to run.
+This application is compiled into native machine code (AoT compilation) rather than using IL. This ensures more efficiency. The application is self-contained and doesn't need any pre-installed dependencies in order to run.
 
 # Done optimizations
 
