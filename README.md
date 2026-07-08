@@ -45,13 +45,13 @@ There is a setting in the `.csproj` file that creates a `.mstat` in `obj/` after
 (classes, functions etc.) create how many bytes. I noticed, among others, that `System.String` and `System.Console` had the highest amount of byte allocations.
 Mind you, the high number of allocated bytes I saw isn't bad. It's just noticeably high.
 
-Checking out the `.mstat` file made me realize that strings (and other things) are expensive and this explains why developers, depending on their projects, goals and target platforms, may not want to use strings. Not saying though strings are bad and should be avoided. That would be inconvinient. 
+Checking out the `.mstat` file made me realize that strings (and other things) are expensive and this explains why developers, depending on their projects, goals and target platforms, may want to avoid using certain things and seek alternatives. Not saying Strings and other things (e.g. `System.Console` functionalities) are bad and should be avoided. That would be inconvinient. 
 
 If however there is a very big project, then maybe optimizations should be considered for better efficiency and performance. In the project 'TinyWordle' (see [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle)), nikouu managed to reduce the initial byte size from 62091 KB to a whopping 680 KB.
 
-I will continue using strings just fine unless there is an important reason to write more efficient instructions. Heck, you can even write efficient string instructions e.g. using `string.Create()` and pass `Span` to the method. 
+I will continue using strings and anything else just fine in my future projects. If there are however valid reasons for optimizations in my future projects, then I will take it into consideration.
 
-In reality however: frequent optimizations relying on low-level instructions and (perhaps) native functionality imports isn't always ideal for everybody, especially for many other projects.
+In reality however: frequent optimizations through things like low-level instructions, bitwise operators and (perhaps) native functionality imports (see `interop/linux_terminal.cs` and `interop/windows_terminal.cs`)... Well, it's not ideal for everybody, especially for many other projects. Not to mention it would increase the complexity (which can introduce problems you know have to deal with) and cognitive overhead of the code base. If you can do something in a simple way... then you should follow the path of least resistance. 🙂
 
 ## Replacing `System.Console` with native terminal functions
 
@@ -59,7 +59,7 @@ As the title implies, I replaced `System.Console` with native terminal functions
 * `linux_terminal.cs`
 * `windows_terminal.cs` (copied from [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle) and then optmizied, e.g. using `LibraryImport()` instead of `DllImport()`)
 
-Both files simply import native OS functionalities for their own terminal. That way, I don't have to rely on `System.Console`, which saves a lot of bytes.
+Both files simply import native OS functionalities for their own terminal. Using native functionalities instead of using `System.Console` recuded many bytes.
 
 ## Mostly avoiding `System.String`
 
