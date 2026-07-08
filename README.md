@@ -54,7 +54,7 @@ In reality however: frequent optimizations relying on low-level instructions and
 
 As the title implies, I replaced `System.Console` with native terminal functions. Check out `interop/`. There are two files:
 * `linux_terminal.cs`
-* `windows_terminal.cs` (copied from [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle)) and then optmizied, e.g. using `LibraryImport()` instead of `DllImport()`)
+* `windows_terminal.cs` (copied from [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle) and then optmizied, e.g. using `LibraryImport()` instead of `DllImport()`)
 
 Both files simply import native OS functionalities for their own terminal. That way, I don't have to rely on `System.Console`, which saves a lot of bytes.
 
