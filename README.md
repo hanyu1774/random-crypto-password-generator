@@ -1,9 +1,21 @@
 # Random Passwort Generator
 
-This application will create tough passwords. CSPRPNG is utilized to create random characters. 
+This console application will create tough passwords. CSPRPNG is utilized to create random characters. 
 
 No dependencies required before using it. The executable is already in native mashine code and self-contained.
-See "Releases" on the right.
+See "Releases" on the right. After you downloaded the executable from the "Releases" tab, you can the application from the terminal using the command....
+
+```
+./<name_of_executable>
+```
+
+If you are on Linux and for whatever reason, you get an error saying it can't be executed, run this first before you run the upper command:
+
+```
+chmod +x <name_of_executable>
+```
+
+This will mark the binary as an executable.
 
 This application is compiled into native machine code (AoT compilation) rather than using IL. This ensures more efficiency. The application is self-contained and doesn't need any pre-installed dependencies in order to run.
 
@@ -11,6 +23,20 @@ This application is compiled into native machine code (AoT compilation) rather t
 A CSPRNG (cryptographically secure pseudorandom number generator) still runs on a mathematical algorithm, but it is seeded, and often continuously reseeded, with entropy gathered from the hardware level through mouse movement, keyboard timing, etc.. This makes its output computationally infeasible to predict, even if someone knows the algorithm.
 
 A plain PRNG (often loosely called "RNG")is not cryptographically secure. It produces a fully deterministic sequence from its algorithm and seed. If a hacker knows which algorithm was used and can figure out or guess the seed, for example if it was seeded from something predictable like the system clock, they can reproduce the entire output sequence, including any password generated from it. The real weakness isn't the password's length, it's that the seed's possible values are limited enough to search or guess.
+
+## Compilation
+
+Since I do frequent optimizations, I may not upload the latest binary. So, if you see any updates and you want to get the latest, optimized binary, then you can download what you want. I will upload the updated code frequently and may upload specific versions (known as '`attempt <number>`') here, too. Grab what you want.
+
+To compile the code, simply run...
+
+```
+dotnet publish -c Release
+```
+
+...in the console. The binary can be found in `<project>/bin/release/<dotnet version>/<platform>/publish`.
+
+
 
 ## Done optimizations
 
@@ -54,9 +80,7 @@ Checking out the `.mstat` file made me realize that strings (and other things) a
 
 If however there is a very big project, then maybe optimizations should be considered for better efficiency and performance. In the project 'TinyWordle' (see [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle)), nikouu managed to reduce the initial byte size from 62091 KB to a whopping 680 KB.
 
-I will continue using strings and anything else just fine in my future projects. If there are however valid reasons for optimizations in my future projects, then I will take it into consideration.
-
-In reality however: frequent optimizations through things like low-level instructions, bitwise operators and (perhaps) native functionality imports (see `interop/linux_terminal.cs` and `interop/windows_terminal.cs`)... Well, it's not ideal for everybody, especially for many other projects. Not to mention it would increase the complexity (which can introduce problems you know have to deal with) and cognitive overhead of the code base. If you can do something in a simple way... then you should follow the path of least resistance. 🙂
+I will continue using strings and anything else just fine in my future projects. If there are however valid reasons for optimizations in my future projects, then I will take it into consideration. Why? Well, if you can do something in a simple way... then you should follow the path of least resistance. 🙂 Anyway, I wanted to mention this just to be clear. Since the optimization efforts in this project are done for education purposes, I will continue doing the optimizations.
 
 ### Replacing `System.Console` with native terminal functions
 
