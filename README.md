@@ -32,6 +32,9 @@ I don't intend to sound misleading. There are some weird things going on under t
 I made this same project in C++ and Rust. Their compiled binary sizes were very small:
 * C++: 220 KB (Linux)
 * Rust: 480 KB (Linux)
+
+Compared to...
+  
 * C#:
 * * 1.3 MB (former size on Windows)
   * 1.6 MB (former size on Linux)
