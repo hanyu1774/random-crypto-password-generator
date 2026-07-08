@@ -83,7 +83,7 @@ Anyway, after mostly replacing `string`, the compiled binary size became much sm
 
 ## Future work to do...
 
-From time to time I will update this repo and document my attempts to decrease the binary size and increase efficiency. What I wrote above was just... a "brief" summary. From now on, future updates will include technical details for better understanding.
+From time to time I will update this repo and document my attempts to decrease the binary size and increase efficiency. What I wrote above was just... a "brief" summary. From now on, future updates will include technical details, screenshots, benchmark results etc. for better understanding and transparency.
 
 My thoughts of what can be done in future...
 
