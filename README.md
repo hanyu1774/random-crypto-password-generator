@@ -14,7 +14,9 @@ A plain PRNG (often loosely called "RNG")is not cryptographically secure. It pro
 
 ## Done optimizations
 
-Although this project is small, I did performance optimizations to improve my skills in C#.
+Although this project is small, I did performance optimizations to improve my skills in C#. Mind you, any future work will take its time and I will document my research and results.
+Why going this far? This is because the CLR and JIT of C# isn't well understood. Although people know how to do performance optimizations in C#, I want to document here my findings about successful or unsuccesful attempts doing optimizations. Up until [[#Mostly avoiding `System.String`]] I will explain my "basic" work done for my first, successful performance optimizations.
+
 The main inspiration doing the optimizations was because of this repo: [nikouu/TinyWorldle](https://github.com/nikouu/TinyWordle)
 
 So, what did I do?
@@ -26,8 +28,9 @@ Music:   https://www.youtube.com/watch?v=-mtcfkWDbOU  ---- "File Select" theme f
 What? You don't know pannenkoek2012 / UncommentatedPannen  ?? This is guy is famous in the speed running and modding community of SM64.
 Why the music?? Because that guy uses this music whenever he explains deep meta stuff about SM64 with great attention to detail. Since I will talk about meta stuff here, too, why not listen to the same music, while you continue reading? I am just joking. 😂
 
+## First Attempt
 
-## Checking out byte allocations and binary sizes
+### Checking out byte allocations and binary sizes
 
 I don't intend to sound misleading. There are some weird things going on under the hood in .NET which I don't fully understand yet.
 
@@ -55,7 +58,7 @@ I will continue using strings and anything else just fine in my future projects.
 
 In reality however: frequent optimizations through things like low-level instructions, bitwise operators and (perhaps) native functionality imports (see `interop/linux_terminal.cs` and `interop/windows_terminal.cs`)... Well, it's not ideal for everybody, especially for many other projects. Not to mention it would increase the complexity (which can introduce problems you know have to deal with) and cognitive overhead of the code base. If you can do something in a simple way... then you should follow the path of least resistance. 🙂
 
-## Replacing `System.Console` with native terminal functions
+### Replacing `System.Console` with native terminal functions
 
 As the title implies, I replaced `System.Console` with native terminal functions. Check out `interop/`. There are two files:
 * `linux_terminal.cs`
@@ -63,13 +66,13 @@ As the title implies, I replaced `System.Console` with native terminal functions
 
 Both files simply import native OS functionalities for their own terminal. Using native functionalities instead of using `System.Console` recuded many bytes.
 
-## Mostly avoiding `System.String`
+### Mostly avoiding `System.String`
 
 The `.mstat` file revealed that `System.String` wasted most amount of bytes. I mostly avoided using `System.String`. Instead, I used most of the time:
 * `Span<T>`
 * `ReadOnlySpan<T>`
 * `char[]`
-* `byte[]` (a byte is an unsigned int with a size of 2^8 bytes. As such, it already represents a character, when converted to ASCII)
+* `byte[]`
 * `stackalloc`
 
 etc..
@@ -77,3 +80,21 @@ etc..
 I have no definitive answer for everything but I did find out some reasons why `System.String` wasted many bytes. It's because various compiler/runtime messages (e.g. exceptions) and culture specific data are included into the binary. You can do settings in the `.csproj` file to mitigate this. Check out the project's `.csproj` file to see which settings I used. :)
 
 Anyway, after mostly replacing `string`, the compiled binary size became much smaller.
+
+## Future work to do...
+
+From time to time I will update this repo and document my attempts to decrease the binary size and increase efficiency. What I wrote above was just... a "brief" summary. From now on, future updates will include technical details for better understanding.
+
+My thoughts of what can be done in future...
+
+* Test `MethodImpl` options
+* Check out hex data and possibly Assembly instructions within the binary. Maybe something can be trimmed or optimized?
+* Learn more about various settings in the `.csproj` to get more data for analytic purposes.
+* Learn more about various settings in the `.csproj` to do more optimizations and trimming.
+* Remove the remaining use of `string` and check results.
+* Instead of using the two `interop/` files, how about directly importing the OS' native terminal functionalities via a setting in the `.csproj` file? Maybe that could reduce the binary size further? ...Well, C# can work with C/C++ interops. Need to do some more digging...
+* Test `static class` and `readonly struct` for `const` data in certain places and see which one is more efficient.
+* ...Well... How about rewriting certain instructions entirely in true low level instructions (`fixed`, `System.Runtime.Intrinsics` etc.)? Need to read the dev blogs from C# engineers and other articles for more info.
+* Get a better understanding what's going on in the CLR and JIT of C#. Need to read the dev blogs from C# engineers because they explain it in great detail.
+* Learn more about the repo 'bflat'. See: https://flattened.net/  and [bflattened/bflat](https://github.com/bflattened/bflat) (here on Github). This is a community fork of the .NET 10 SDK, where lots of optimizations where done to heavily decrease the binaries and increase performance.
+* 
